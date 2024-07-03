@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="navbar">
+        <nav class="home">
+            <a href="index.html">
+                <p>Home</p>
+            </a>
+        </nav>
+        <nav class="buku">
+            <a href="buku.html">
+                <p>Buku</p>
+            </a>
+        </nav>
+    </div>
+    <div class="content">
+        <nav class="conten1">
+            <div class="conten1">
+                <a href="#">
+                    <img src="mariposa.jpg" width="80%" height="80%">
+                </a>
+                <button class="tmbhbtn" data-target="Tmptulasan1">Tambah Ulasan</button>
+            </div>
+            <div class="Tmptulasan" id="Tmptulasan1"></div>
+        </nav>
+        <nav class="conten1">
+            <div class="conten1">
+                <a href="#">
+                    <img src="dilan.jpg" width="80%" height="80%">
+                </a>
+                <button class="tmbhbtn" data-target="Tmptulasan2">Tambah Ulasan</button>
+            </div>
+            <div class="Tmptulasan" id="Tmptulasan2"></div>
+        </nav>
+        <nav class="conten1">
+            <div class="conten1">
+                <a href="#">
+                    <img src="melihat api bekerja.jfif" width="80%" height="80%">
+                </a>
+                <button class="tmbhbtn" data-target="Tmptulasan3">Tambah Ulasan</button>
+            </div>
+            <div class="Tmptulasan" id="Tmptulasan3"></div>
+        </nav>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="reviewForm">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" required><br>
+                <label for="rating">Rating:</label><br>
+                <input type="number" id="rating" name="rating" min="1" max="5" required><br>
+                <label for="ulasan">Ulasan:</label><br>
+                <textarea id="ulasan" name="ulasan" rows="4" cols="50" required></textarea><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
