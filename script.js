@@ -4,7 +4,8 @@ import {
     doc,
     setDoc,
     getDocs,
-    collection
+    collection,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -62,22 +63,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                 targetElementId: targetElementId
             });
             console.log("Review successfully written!");
+            return reviewId;
         } catch (error) {
             console.error("Error writing document: ", error);
         }
     }
 
+    // Function to delete review
+    async function deleteReview(reviewId) {
+        try {
+            await deleteDoc(doc(db, "bookstore", reviewId));
+            console.log("Review successfully deleted!");
+        } catch (error) {
+            console.error("Error deleting document: ", error);
+        }
+    }
+
     // Handle form submission
-    document.getElementById("reviewForm").addEventListener('submit', function(event) {
+    document.getElementById("reviewForm").addEventListener('submit', async function(event) {
         event.preventDefault();
         const username = document.getElementById('username').value;
         const rating = document.getElementById('rating').value;
         const ulasan = document.getElementById('ulasan').value;
 
-        writeReview(username, rating, ulasan, targetElement.id);
+        const reviewId = await writeReview(username, rating, ulasan, targetElement.id);
 
-        // Add review to the target element
-        const reviewHtml = `<p><strong>${username}</strong> (${rating}/5): ${ulasan}</p>`;
+        // Add review to the target element with delete button
+        const reviewHtml = `
+            <div id="${reviewId}">
+                <p><strong>${username}</strong> (${rating}/5): ${ulasan}</p>
+                <button class="deleteReview" data-id="${reviewId}">Delete</button>
+            </div>`;
         targetElement.innerHTML += reviewHtml;
 
         // Close modal
@@ -95,8 +111,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = doc.data();
         const targetElement = document.getElementById(data.targetElementId);
         if (targetElement) {
-            const reviewHtml = `<p><strong>${data.username}</strong> (${data.rating}/5): ${data.ulasan}</p>`;
+            const reviewHtml = `
+                <div id="${doc.id}">
+                    <p><strong>${data.username}</strong> (${data.rating}/5): ${data.ulasan}</p>
+                    <button class="deleteReview" data-id="${doc.id}">Delete</button>
+                </div>`;
             targetElement.innerHTML += reviewHtml;
+        }
+    });
+
+    // Event listener for delete buttons
+    document.addEventListener('click', async function(event) {
+        if (event.target && event.target.className === 'deleteReview') {
+            const reviewId = event.target.getAttribute('data-id');
+            await deleteReview(reviewId);
+
+            // Remove review from the page
+            document.getElementById(reviewId).remove();
         }
     });
 });
